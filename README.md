@@ -17,16 +17,16 @@ This is the repository of supplementary data tables and project code related to 
   - Metadata and sequencing results for short-read (SR) WGS samples
     
 - *hybrid_index.csv*
-  - Hybrid index inference for 984 wild-caught samples, inferred using [gghybrid](https://github.com/ribailey/gghybrid)
+  - Hybrid index estimation for 984 wild-caught samples, inferred using [gghybrid](https://github.com/ribailey/gghybrid)
     
 - *gwas_association_peaks.csv*
-  - Summary of eleven bill color association peaks identified by genome-wide association studies, inferred using [GEMMA](https://github.com/genetics-statistics/GEMMA)
+  - Summary of the eleven bill color association peaks identified by genome-wide association studies, inferred using [GEMMA](https://github.com/genetics-statistics/GEMMA)
     
 - *geographic_cline_input.csv*
-  - Geographic cline data for bill color associated SNPs and hybrid index
+  - Geographic cline data for bill color associated SNPs of interest and hybrid index
     
 - *genomic_cline_results.csv*
-  - Genomic cline results for 649 ancestry informative SNPs in hybrid index, inferred using [gghybrid](https://github.com/ribailey/gghybrid)
+  - Genomic cline results for 649 independent ancestry informative SNPs used to calculate hybrid index, inferred using [gghybrid](https://github.com/ribailey/gghybrid)
     
 - *phasing_performance.csv*
   - Phasing performance (N50) on chr2, chr8, and chrZ for LR and SR samples, calculated using [HapCUT2](https://github.com/vibansal/HapCUT2)
