@@ -2,9 +2,10 @@
 
 This is the repository of supplementary data tables and project code related to long-tailed finch haplotagging project: "Adaptive introgression of carotenoid processing genes across the long-tailed finch hybrid zone".
 
-### Supplementary Data Tables
+## Supplementary Data Tables
 
-- *carotenoid_composition.csv* Bill tissue carotenoid composition of each long-tailed finch subspecies as measured by HPLC
+- *carotenoid_composition.csv*
+  - Bill tissue carotenoid composition of each long-tailed finch subspecies as measured by HPLC
 - *bill_color_H3.csv* Bill color phenotype data for 1498 wild-caught and captive-reared long-tailed finch samples
 - *metadata_LR.csv* Metadata, sequencing results, and haplotagging performance for linked-read (LR) WGS samples
 - *metadata_SR.csv* Metadata and sequencing results for short-read (SR) WGS samples
