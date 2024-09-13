@@ -23,6 +23,8 @@ done;
 ### Marking duplicates with BX-aware settings
 
 ```
+# Mark duplicates in sorted BAM files with BX-aware options
+
 for i in 01 02 03 04 05 06 07 08 09 `seq 10 24`; do
         name=$(grep C"$i" P04.sample.info | cut -f1);
         picard MarkDuplicates I="$name"_C"$i"_P04_L003.sorted.bam O="$name"_C"$i"_P04_L003.mkdup.bam M="$name"_C"$i".mkdup.metrics CREATE_INDEX=TRUE READ_ONE_BARCODE_TAG=BX READ_TWO_BARCODE_TAG=BX VALIDATION_STRINGENCY=LENIENT;
