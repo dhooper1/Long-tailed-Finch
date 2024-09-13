@@ -1,11 +1,31 @@
 # Scripts used for data analysis and their usage
 
+## Linked-read mapping
+
+Linked reads include BX tag information and require slight modification to default [BWA mem](https://github.com/lh3/bwa) mapping behavior. Also - see details [here](https://github.com/evolgenomics/haplotagging/tree/master) for recommended read mapping using barcode-first read mapper [EMA](https://github.com/arshajii/ema).
+
+In the example below, the first 24 samples present in file (i.e., P04.sample.info) linking sample ID and well ID for a 96-well plate of samples are sequentially mapped to the [zebra finch reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_003957565.4/).
+```
+# Map sequence data to zebra finch reference genome using BWA mem including BX tag information
+
+reference="bTaeGut1.pri.cur.20210409.fasta"
+
+for i in 01 02 03 04 05 06 07 08 09 `seq 10 24`; do
+        name=$(grep C"$i" P04.sample.info | cut -f1);
+        bwa mem -C -t 20 $reference \
+        "$name"_C"$i"_P04_L003_NOH.R1.fastq.gz "$name"_C"$i"_P04_L003_NOH.R2.fastq.gz \
+        -R "@RG\tID:"$name"\tSM:"$name"\tLB:"$name"\tPL:Illumina.NovaSeq4000.2x150" | samtools view -bh - > "$name"_C"$i"_P04_L003.bam;
+        samtools sort -@ 20 -l 9 -T "$name".tmpsort -o "$name"_C"$i"_P04_L003.sorted.bam "$name"_C"$i"_P04_L003.bam;
+        echo "Finished mapping and sorting sample: '$name'";
+done;
+```
+
 ## Variant calling
 
 Initial variant calling performed using [bcftools](https://samtools.github.io/bcftools/bcftools.html) mpileup by chromosome using all project samples. Quality filtering of intial variant set performed using bcftools to generate a set of high-quality variants for imputation.
 
 ### Step #1: Use bcftools mpileup to create initial set of variants relative to the reference
-In the example below, an intial set of SNP and INDEL variants are called relative to the [zebra finch reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_003957565.4/) based on reads  from all project samples (i.e., *.mkdup.bam) mapped to a 5 Mb window on chromosome 2 (i.e., chr2).
+In the example below, an intial set of SNP and INDEL variants are called relative to the zebra finch reference genome based on reads  from all project samples (i.e., *.mkdup.bam) mapped to a 5 Mb window on chromosome 2 (i.e., chr2).
 
 ```
 reference="bTaeGut1.pri.cur.20210409.fasta"
