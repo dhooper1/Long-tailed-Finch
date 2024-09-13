@@ -1,4 +1,4 @@
-### Scripts used for data analysis
+# Scripts used for data analysis and their usage
 
 ## Variant calling
 
