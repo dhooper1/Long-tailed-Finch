@@ -19,6 +19,7 @@ The variant calling process above was repeated in 5 Mb sliding-windows across th
 Variant calling was performed in 5 Mb sliding-windows across the entire chromosome, now we need to concatenate these into a single file for the entire chromosome.
 
 ```
+# Create a list file containing the names of all window result files
 ls chr2*.bcf > concat.chr2.list
 
 # Index initial set of variants
@@ -72,6 +73,24 @@ R -e 'library("STITCH"); STITCH(tempdir = tempdir(), chr="chr25", bamlist="sampl
 ```
 
 The imputation approaches above were repeated in 5 Mb sliding-windows across the entire chromosome/genome before concatenating results for each chromosome.
+
+```
+# Create a list file of all STITCH output for a given chromosome
+ls stitch.chr2.*vcf.gz > concat.chr2.list
+
+# Concatenate results from a chromosome into a single file 
+bcftools concat -f concat.chr2.list -a -D -Oz -o stitch.chr2.repeatmask.vcf.gz
+
+bcftools index stitch.chr2.repeatmask.vcf.gz
+
+# Filter variants with a STITCH INFO_SCORE <0.4
+bcftools view -i'INFO_SCORE >= 0.4' stitch.chr2.repeatmask.vcf.gz -Oz -o stitch.chr2.repeatmask.filter.vcf.gz
+
+bcftools index stitch.chr2.repeatmask.filter.vcf.gz
+
+# Add the PG and PL fields to STITCH output
+./add_PG_PL.sh stitch.chr2.repeatmask.filter.vcf.gz
+```
 
 ## Phasing using HapCUT2
 
