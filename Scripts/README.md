@@ -124,3 +124,20 @@ done
 
 rm $date.$chrom.n50.list
 ```
+
+### Merge all phased single-sample VCF files into a multi-sample VCF
+
+```
+chrom="chr2"
+date="231214"
+work_dir="/mendel-nas1/dhooper/SNPs/phased_vcfs"
+
+# Create a list of all VCF files you want to merge
+ls *pMarkdup.$chrom.PL.AD.HAPCUT2.vcf.gz > $date.samples.$chrom.list
+
+# Merge all single-sample VCF files in list file
+bcftools merge -l $date.samples.$chrom.list -Oz -o hapcut2.$date.$chrom.merge.vcf.gz
+
+tabix hapcut2.$date.$chrom.merge.vcf.gz
+```
+
