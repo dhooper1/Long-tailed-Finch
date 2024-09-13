@@ -45,15 +45,16 @@ A BED file containing repeat regions called relative to the zebra finch referenc
 
 ```
 repeats="bTaeGut1.pri.cur.20210409.fasta.repeatmask.bed"
+
 vcftools --gzvcf chr2.concatenated.biallelic.vcf.gz --exclude-bed $repeats --recode --stdout | bgzip -c > chr2.concatenated.biallelic.repeatmask.vcf.gz
+
+bcftools index chr2.concatenated.biallelic.repeatmask.vcf.gz
 ```
 
-### Step #5: Extract SNP details for STITCH above a QUAL threshold of 500
+### Step #5: Extract SNP allelic details for STITCH
 
 ```
-bcftools query -f '%CHROM %POS %REF %ALT %QUAL\n' chr2.concatenated.biallelic.repeatmask.vcf.gz | awk '$5 >= 500' | awk '{print $1,$2,$3,$4}' > chr2.concatenated.biallelic.repeatmask.pos.txt
-
-sed -i -- $'s/ /\t/g' chr2.concatenated.biallelic.repeatmask.pos.txt
+./make.position.file.STITCH.sh chr2
 ```
 
 ## Phasing using HapCUT2
