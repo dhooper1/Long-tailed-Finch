@@ -4,7 +4,7 @@
 
 Create a combined, phased VCF file for a single individual sample using: hapcutVcf.haplotagging.sh
 
-In the example below, a text file (samples.list) providing sample IID values is used to phase all variants on chromosome 2 (i.e., chr2) given a multi-sample VCF file containing each of the desired samples.
+In the example below, a text file (samples.list) providing sample IID values is used to phase all variants on chromosome 2 (i.e., chr2) given a multi-sample VCF file containing each of the desired samples. Phasing carried out using [HapCUT2](https://github.com/vibansal/HapCUT2).
 
 ```
 chrom="chr2"
