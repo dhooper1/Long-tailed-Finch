@@ -96,7 +96,7 @@ bcftools index stitch.chr2.repeatmask.filter.vcf.gz
 
 Create a combined, phased VCF file for a single individual sample using: hapcutVcf.haplotagging.sh
 
-In the example below, a text file (samples.list) providing sample IID values is used to phase all variants on chromosome 2 (i.e., chr2) given a multi-sample VCF file containing each of the desired samples. Phasing carried out using [HapCUT2](https://github.com/vibansal/HapCUT2).
+In the example below, a text file (samples.list) providing sample IDs is used to phase all variants on chromosome 2 (i.e., chr2) given a multi-sample VCF file - generated above - containing each of the desired samples. Phasing carried out using [HapCUT2](https://github.com/vibansal/HapCUT2).
 
 ```
 chrom="chr2"
@@ -104,4 +104,23 @@ chrom="chr2"
 cat samples.list | while read LINE; do
   ./hapcutVcf.haplo_230403.sh ${LINE}_*.bam stitch.$chrom.repeatmask.filter.PL.vcf.gz $chrom;
 done
+```
+
+### Calculate phase block N50 for a given chromosome
+
+In the example below, phase block N50 is calculated on chr2 for all samples. 
+```
+chrom="chr2"
+work_dir="/mendel-nas1/dhooper/SNPs/phased_vcfs/$chrom"
+date="240329"
+
+# Create a list of samples with phase block data
+ls $work_dir/*n50.bed > $date.$chrom.n50.list
+
+# Use n50_calculate.sh script on each sample
+cat $date.$chrom.n50.list | while read LINE; do
+  ./n50_calculate.sh ${LINE} >> $date.$chrom.n50.out;
+done
+
+rm $date.$chrom.n50.list
 ```
