@@ -1,8 +1,8 @@
 ### Scripts used for data analysis
 
-## Variant calling and imputation
+## Variant calling
 
-Initial variant calling performed using [bcftools](https://samtools.github.io/bcftools/bcftools.html) mpileup by chromosome using all project samples. Quality filtering of intial variant set performed using bcftools to generate a set of high-quality variants for imputation. Imputation performed on this set of high-quality variants using [STITCH](https://github.com/rwdavies/STITCH).
+Initial variant calling performed using [bcftools](https://samtools.github.io/bcftools/bcftools.html) mpileup by chromosome using all project samples. Quality filtering of intial variant set performed using bcftools to generate a set of high-quality variants for imputation.
 
 ### Step #1: Use bcftools mpileup to create initial set of variants relative to the reference
 In the example below, an intial set of SNP and INDEL variants are called relative to the [zebra finch reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_003957565.4/) based on reads  from all project samples (i.e., *.mkdup.bam) mapped to a 5 Mb window on chromosome 2 (i.e., chr2).
@@ -13,7 +13,7 @@ reference="bTaeGut1.pri.cur.20210409.fasta"
 bcftools mpileup -Ou -f $reference -r chr2:10000001-15000000 *.mkdup.bam | bcftools call -mv -Ob -o chr2:10000001-15000000.bcf
 ```
 
-Repeat the variant calling process above in 5 Mb sliding-windows across the entire chromosome/genome.
+The variant calling process above was repeated in 5 Mb sliding-windows across the entire chromosome/genome.
 
 ### Step #2: Concatenate variant call 'chunks' into a single chromosome set
 Variant calling was performed in 5 Mb sliding-windows across the entire chromosome, now we need to concatenate these into a single file for the entire chromosome.
@@ -56,6 +56,17 @@ bcftools index chr2.concatenated.biallelic.repeatmask.vcf.gz
 ```
 ./make.position.file.STITCH.sh chr2
 ```
+
+## Genotype imputation using STITCH
+
+Imputation performed on a set of high-quality variants - generated above - using [STITCH](https://github.com/rwdavies/STITCH).
+
+In the example below, imputation is performed on all desired variants in position file 'chr2.Q500.repeatmask.pos.txt' located within a 5 Mb window using reads from BAMs for all project samples listed in 'samples.bamlist.txt'.
+```
+R -e 'library("STITCH"); STITCH(tempdir = tempdir(), chr="chr2", bamlist="samples.bamlist.txt", posfile="chr2.Q500.repeatmask.pos.txt", outputdir="/mendel-nas1/dhooper/SNPs/STITCH/", method="pseudoHaploid", K=100, nGen=1000, S=1, readAware=TRUE, keepInterimFiles=FALSE, shuffle_bin_radius=100, iSizeUpperLimit=500000, keepSampleReadsInRAM=TRUE, niterations=40, switchModelIteration=25, regionStart=10000001, regionEnd=15000000, buffer=50000, expRate=1.0, outputSNPBlockSize=5000, use_bx_tag=FALSE, nCores=1)'
+```
+
+The imputation process above was repeated in 5 Mb sliding-windows across the entire chromosome/genome.
 
 ## Phasing using HapCUT2
 
