@@ -61,12 +61,17 @@ bcftools index chr2.concatenated.biallelic.repeatmask.vcf.gz
 
 Imputation performed on a set of high-quality variants - generated above - using [STITCH](https://github.com/rwdavies/STITCH).
 
-In the example below, imputation is performed on all desired variants in position file 'chr2.Q500.repeatmask.pos.txt' located within a 5 Mb window using reads from BAMs for all project samples listed in 'samples.bamlist.txt'.
+In the example below, characteristic for windows on chromosomes >25 Mb, imputation is performed on all desired variants in position file 'chr2.Q500.repeatmask.pos.txt' located within a 5 Mb window using reads from BAMs for all project samples listed in 'samples.bamlist.txt'.
 ```
 R -e 'library("STITCH"); STITCH(tempdir = tempdir(), chr="chr2", bamlist="samples.bamlist.txt", posfile="chr2.Q500.repeatmask.pos.txt", outputdir="/mendel-nas1/dhooper/SNPs/STITCH/", method="pseudoHaploid", K=100, nGen=1000, S=1, readAware=TRUE, keepInterimFiles=FALSE, shuffle_bin_radius=100, iSizeUpperLimit=500000, keepSampleReadsInRAM=TRUE, niterations=40, switchModelIteration=25, regionStart=10000001, regionEnd=15000000, buffer=50000, expRate=1.0, outputSNPBlockSize=5000, use_bx_tag=FALSE, nCores=1)'
 ```
 
-The imputation process above was repeated in 5 Mb sliding-windows across the entire chromosome/genome.
+In the example, below, modifications have been made for 1 Mb windows on micro-chromosomes <10 Mb with much greater per-bp rates of recombination.
+```
+R -e 'library("STITCH"); STITCH(tempdir = tempdir(), chr="chr25", bamlist="samples.bamlist.txt", posfile="chr25.Q500.repeatmask.pos.txt", outputdir="/mendel-nas1/dhooper/SNPs/STITCH/", method="pseudoHaploid", K=100, nGen=1000, S=1, readAware=TRUE, keepInterimFiles=FALSE, shuffle_bin_radius=100, iSizeUpperLimit=500000, keepSampleReadsInRAM=TRUE, niterations=40, switchModelIteration=25, regionStart=1, regionEnd=1000000, buffer=50000, expRate=10.0, outputSNPBlockSize=5000, use_bx_tag=FALSE, nCores=1)'
+```
+
+The imputation approaches above were repeated in 5 Mb sliding-windows across the entire chromosome/genome before concatenating results for each chromosome.
 
 ## Phasing using HapCUT2
 
