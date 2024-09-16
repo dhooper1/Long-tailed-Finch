@@ -171,7 +171,7 @@ ls $work_dir/*n50.bed > $date.$chrom.n50.list
 
 # Use n50_calculate.sh script on each sample
 cat $date.$chrom.n50.list | while read LINE; do
-  ./n50_calculate.sh ${LINE} >> $date.$chrom.n50.out;
+  ./calculate_phase_n50.sh ${LINE} >> $date.$chrom.n50.out;
 done
 
 rm $date.$chrom.n50.list
