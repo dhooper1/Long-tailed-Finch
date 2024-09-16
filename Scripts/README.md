@@ -32,6 +32,26 @@ for i in 01 02 03 04 05 06 07 08 09 `seq 10 24`; do
 done
 ```
 
+## Molecule summaries
+
+Linked-read (LR) performance was evaluated by analyzing: number of unique (BX) beadTags, mean molecules per (BX) beadTag, mean read number per molecule, molecule N50 length, molecule mean length, and molecule maximum length. Note that each BAM file must be sorted by BX tag rather than by chromosome:position information.
+
+Example approach for evaluating LR performance for sample AQ15:
+```
+# Sort a BAM file by BX tag information rather than by chrom:position
+samtools sort -t BX AQ15_C02_P02.mkdup.bam -o AQ15_C02_P02.mkdup.BX-sorted.bam
+
+# Write molecule output to a bed file
+perl ./bed_write.pl AQ15_C02_P02.mkdup.BX-sorted.bam
+
+# Filter results by mapping QUAL, beadTag specificity, and minimum number of reads per molecule
+./filter_molecules.sh AQ15_C02_P02.mkdup.BX-sorted.linked_reads.full.bed
+
+# Calculate molecule N50
+./calculate_mol_N50.sh AQ15_C02_P02.mkdup.BX-sorted.linked_reads.filter.bed
+
+```
+
 ## Variant calling
 
 Initial variant calling performed using [bcftools](https://samtools.github.io/bcftools/bcftools.html) mpileup by chromosome using all project samples. Quality filtering of intial variant set performed using bcftools to generate a set of high-quality variants for imputation.
