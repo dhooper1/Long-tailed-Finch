@@ -6,7 +6,7 @@ use strict;
 #perl bed_write.pl <IN_BXSORTED.BAM>
 #
 #Writes out to ${bam/.bam/.linked_reads.full.bed}
-#NOTE: This version specifically works with haplotagging BX tags of the format AXXBXXCXXDXX, and in a BAM file that has BX, QX and RX tags
+#NOTE: This version specifically works with haplotagging BX tags of the format AXXCXXBXXDXX, and in a BAM file that has BX, QX and RX tags
 #Output is in BED12 format. See: https://genome.ucsc.edu/FAQ/FAQformat.html#format1
 #This script was written by Yingguang Frank Chan
 
