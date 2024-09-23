@@ -62,7 +62,7 @@ In the example below, an intial set of SNP and INDEL variants are called relativ
 ```
 reference="bTaeGut1.pri.cur.20210409.fasta"
 
-bcftools mpileup -Ou -f $reference -r chr2:10000001-15000000 *.mkdup.bam | bcftools call -mv -Ob -o chr2:10000001-15000000.bcf
+bcftools mpileup -a INFO/AD -Ou -f $reference -r chr2:10000001-15000000 *.mkdup.bam | bcftools call -mv -f GQ,GP -Ob -o chr2:10000001-15000000.bcf
 ```
 
 The variant calling process above was repeated in 5 Mb sliding-windows across the entire chromosome/genome.
