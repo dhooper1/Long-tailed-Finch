@@ -88,9 +88,13 @@ bcftools index chr2.concatenated.bcf
 ### Step #3: Apply QUAL filters to initial variant call set and extract a set of biallelic SNP variants
 
 ```
-bcftools filter -sLowQual -g3 -G10 -e'%QUAL<100 || (RPB<0.1 && %QUAL<50) || (AC<2 && %QUAL<50) || %MAX(AD)<=3 || %MAX(AD)/%MAX(DP)<=0.3' chr2.concatenated.bcf -Ob -o chr2.concatenated.filter
+bcftools filter -sLowQual -g3 -G10 -e'%QUAL<100 || (RPB<0.1 && %QUAL<50) || (AC<2 && %QUAL<50) || %MAX(AD)<=3 || %MAX(AD)/%MAX(DP)<=0.3' chr2.concatenated.bcf -Ob -o chr2.concatenated.filter.bcf
+
+bcftools index chr2.concatenated.filter.bcf
 
 bcftools view -m2 -M2 -v snps -i'FILTER="PASS"' chr2.concatenated.filter.bcf -Oz -o chr2.concatenated.biallelic.vcf.gz
+
+bcftools index chr2.concatenated.biallelic.vcf.gz
 ```
 
 ### Step #4: Remove SNP variants that overlap repeat masked regions
