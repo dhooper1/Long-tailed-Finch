@@ -48,7 +48,7 @@ perl ./bed_write.pl AQ15_C02_P02.mkdup.BX-sorted.bam
 ./filter_molecules.sh AQ15_C02_P02.mkdup.BX-sorted.linked_reads.full.bed
 
 # Calculate molecule N50
-./calculate_mol_N50.sh AQ15_C02_P02.mkdup.BX-sorted.linked_reads.filter.bed
+./calculate_mol_N50.sh AQ15_C02_P02.mkdup.BX-sorted.filter.bed
 
 ```
 
