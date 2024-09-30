@@ -4,7 +4,7 @@
 ## This script also adds sample ID (i.e., IID) to each molecule BX code for downstream analyses
 
 ##Example run
-## ./filter_molecules.sh LA05.P04.BX_sorted.linked_reads.full.bed
+## ./filter_molecules.sh AQ15.P02.BX_sorted.linked_reads.full.bed
 
 input=$1
 output=`echo $input | cut -f1-3 -d"."`
