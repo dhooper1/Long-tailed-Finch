@@ -45,10 +45,10 @@ samtools sort -t BX AQ15_C02_P02.mkdup.bam -o AQ15_C02_P02.mkdup.BX-sorted.bam
 perl ./bed_write.pl AQ15_C02_P02.mkdup.BX-sorted.bam
 
 # Filter results by mapping QUAL, beadTag specificity, and minimum number of reads per molecule
-./filter_molecules.sh AQ15_C02_P02.mkdup.BX-sorted.linked_reads.full.bed
+./filter_molecules.sh AQ15.P02.BX_sorted.linked_reads.full.bed
 
 # Calculate molecule N50
-./calculate_mol_N50.sh AQ15_C02_P02.mkdup.BX-sorted.filter.bed
+./calculate_mol_N50.sh AQ15.P02.BX_sorted.filter.bed
 
 ```
 
