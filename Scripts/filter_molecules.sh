@@ -1,8 +1,15 @@
 #!/bin/bash
 
-## This script removes molecules with ambiguous BX codes, Phred mapping QUAL <50, and with less than four associated read pairs
+## This script removes molecules with ambiguous BX codes, Phred mapping QUAL <50, and with less than four associated read pairs. 
+## This script also adds sample ID (i.e., IID) to each molecule BX code for downstream analyses
+
+##Example run
+## ./filter_molecules.sh LA05.P04.BX_sorted.linked_reads.full.bed
 
 input=$1
 output=`echo $input | cut -f1-3 -d"."`
+IID=`echo $input | cut -f1 -d"."`
 
-awk '!/A00/ && !/B00/ && !/D00/ && $5 >= 50 && $10 >= 4' $input > $output.filter.bed
+awk -F'\t' -v sample="${IID}_" 'BEGIN {OFS="\t"} {$4=sample $4; print}' $input > $output.labeled.bed
+grep -vE "[ABD]00" $output.labeled.bed | awk '$5 >= 50 && $10 >= 4' | sort -k1,1 -k2,2n > $output.filter.bed
+rm $output.labeled.bed
