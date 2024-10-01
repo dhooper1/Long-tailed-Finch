@@ -173,9 +173,9 @@ date="240329"
 # Create a list of samples with phase block data
 ls $work_dir/*n50.bed > $date.$chrom.n50.list
 
-# Use n50_calculate.sh script on each sample
+# Use calculate_phase_N50.sh script on each sample
 cat $date.$chrom.n50.list | while read LINE; do
-  ./calculate_phase_n50.sh ${LINE} >> $date.$chrom.n50.out;
+  ./calculate_phase_N50.sh ${LINE} >> $date.$chrom.n50.out;
 done
 
 rm $date.$chrom.n50.list
