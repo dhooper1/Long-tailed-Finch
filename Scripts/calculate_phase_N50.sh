@@ -1,5 +1,5 @@
 #!/bin/bash
-#usage - ./n50_calculate.sh <input example.n50.bed>
+#usage - ./calculate_phase_N50.sh <input example.n50.bed>
 #conda activate base_genomics
 
 file=$1
