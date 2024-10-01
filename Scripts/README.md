@@ -276,3 +276,4 @@ bgzip $VCF
 
 ```
 
+The file 'chr8.paa.map' was generated using results from the ReLERNN pipeline above.
