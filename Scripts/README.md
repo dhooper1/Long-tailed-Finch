@@ -197,3 +197,82 @@ bcftools merge -l $date.samples.$chrom.list -Oz -o hapcut2.$date.$chrom.merge.vc
 tabix hapcut2.$date.$chrom.merge.vcf.gz
 ```
 
+## Predict the landscape of recombination using ReLERNN
+
+Ancestral recombination graph (ARG) analyses require a genomic map (i.e., the recombination landscape). In the example below, we demonstrate recombination landscape estimate using recurrent neural networks [ReLERNN](https://github.com/kr-colab/ReLERNN), a deep learning method for estimating a genome-wide recombination map using data from individually sequenced genomes.
+
+### Step #1: Generate a VCF file for specific chromosome for a population of interest
+
+In the example below we are focusing on chromosome 8 and only using sites with minor allele frequency >=2% and with a STITCH INFO_SCORE >=0.5. We are also only selecting a subset of male samples (N = 70) from subspecies *acuticauda* to match the sample set we would use to infer the recombination map of chromosome Z. 
+
+```
+out_dir="/mendel-nas1/dhooper/recombination/"
+chr="chr8"
+
+awk '{print $1}' LTFs.paa_allopatric_males.pop > tmp.list
+bcftools view -S tmp.list stitch.$chr.repeatmask.filter.PL.vcf.gz | bcftools filter -i'MAF > 0.02 && INFO_SCORE>=0.5' -Oz -o $out_dir/paa_allo_males.$chr.repeatmask.filter.PL.MAF02.INFO_SCORE_0.5.vcf.gz
+rm tmp.list
+
+## ReLERNN requires input VCF be unzipped
+cd $out_dir
+gunzip paa_allo_males.$chr.repeatmask.filter.PL.MAF02.INFO_SCORE_0.5.vcf.gz
+```
+
+### Step #2: 
+
+In the example below, we run through a full ReLERNN analysis to infer the recombination map on chromosome 8.
+
+```
+SIMULATE="ReLERNN_SIMULATE"
+TRAIN="ReLERNN_TRAIN"
+PREDICT="ReLERNN_PREDICT"
+BSCORRECT="ReLERNN_BSCORRECT"
+SEED="42"
+MU="5.85e-9"
+URTR="15"
+WORK_DIR="/mendel-nas1/dhooper/recombination"
+DIR="$WORK_DIR/paa/chr8/"
+VCF="$WORK_DIR/paa_allo_males.chr8.repeatmask.filter.PL.MAF02.INFO_SCORE_0.5.vcf"
+GENOME="$WORK_DIR/genome.bed"
+MASK="$WORK_DIR/chr8_accessibility_mask.bed"
+
+##Unzip VCF file if currently zipped
+gunzip $VCF.gz
+
+module load Python/python-3.8.5-openmpi-cuda
+
+# Simulate data
+${SIMULATE} \
+    --vcf ${VCF} \
+    --genome ${GENOME} \
+    --mask ${MASK} \
+    --projectDir ${DIR} \
+    --assumedMu ${MU} \
+    --assumedGenTime 1 \
+    --upperRhoThetaRatio ${URTR} \
+    --seed ${SEED}
+
+# Train network
+${TRAIN} \
+    --projectDir ${DIR} \
+    --nEpochs 500 \
+    --nValSteps 500 \
+    --seed ${SEED}
+
+# Predict
+${PREDICT} \
+    --vcf ${VCF} \
+    --projectDir ${DIR} \
+    --seed ${SEED}
+
+# Parametric Bootstrapping
+${BSCORRECT} \
+    --projectDir ${DIR} \
+    --seed ${SEED}
+
+conda activate base_genomics
+
+bgzip $VCF
+
+```
+
