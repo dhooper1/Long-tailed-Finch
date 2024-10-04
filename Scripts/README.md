@@ -158,7 +158,7 @@ In the example below, a text file (samples.list) providing sample IDs is used to
 chrom="chr2"
 
 cat samples.list | while read LINE; do
-  ./hapcutVcf.haplo_230403.sh ${LINE}_*.bam stitch.$chrom.repeatmask.filter.PL.vcf.gz $chrom;
+  ./hapcutVcf.haplotagging.sh ${LINE}_*.bam stitch.$chrom.repeatmask.filter.PL.vcf.gz $chrom;
 done
 ```
 
