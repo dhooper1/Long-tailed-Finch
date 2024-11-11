@@ -148,6 +148,39 @@ bcftools index stitch.chr2.repeatmask.filter.vcf.gz
 ./add_PG_PL.sh stitch.chr2.repeatmask.filter.vcf.gz
 ```
 
+## Imputation performance
+
+Imputation performance was measured as the squared Pearson correlation between validation (i.e., high coverage) genotypes (GT) and imputed genotypes (GT) and dosages (DS) produced by STITCH. As imputation performance is strongly influenced by allele frequency, we measured it across eight representative frequency bins: [0-0.001], [0.001-0.002], [0.002-0.005], [0.005-0.01], [0.01-0.05], [0.05-0.1], [0.1-0.2], and [0.2-0.5]. Allele frequency was folded prior to evaluating imputation perforamnce so that no variant had an allele frequency that exceeded 0.5.
+
+To evaluate imputation accuracy at the genotype level, genotype discordance was quantified between validation and imputed genotypes for: (1) all sites together, (2) homozygous major alleles, (3) heterozygous, and (4) homozygous minor alleles.
+
+### Step #1: Prepare input data
+
+In the example below, validation and imputed information is extracted for sample 'AG03' in order to evaluate imputation performance on chromosome 8.
+
+```
+# Extract validation genotype calls from desired sample of interest
+bcftools query -s AG03 -f '%CHROM\t%POS\t[%GT]\n' chr8.validation.vcf.gz | gzip > AG03.chr8.validation.tsv.gz
+
+# Extract STITCH INFO_SCORE, estimated allele frequency, genotype, and dosage for sample of interest
+bcftools query -s AG03 -f '%CHROM\t%POS\t[%INFO_SCORE]\t[%EAF]\t[%GT]\t[%DS]\n' stitch.chr8.repeatmask.filter.vcf.gz | gzip > AG08.chr8.imputed.tsv.gz
+```
+
+### Step #2: Evaluate imputation performance
+
+In the example below, imputation performance is evaluated as the Pearson correlation between validation and imputed genotypes (GT) and dosage (DS) at pre-defined minor allele frequency bins and as the genotype discordance at the genotype level. Results are written to screen and saved to desired output file.
+
+```
+# Imputation performance by genotype (GT) with a desired INFO_SCORE filter (i.e., 0.4)
+python imputation_accuracy_GT_write2out.py AG03.chr8.validation.tsv.gz AG08.chr8.imputed.tsv.gz 0.4 AG03.chr8.GT.results.tsv
+
+# Imputation performance by dosage (DS) with a desired INFO_SCORE filter (i.e., 0.4)
+python imputation_accuracy_DS_write2out.py AG03.chr8.validation.tsv.gz AG08.chr8.imputed.tsv.gz 0.4 AG03.chr8.DS.results.tsv
+
+# Imputation accuracy measured as genotype discordance with a desired INFO_SCORE and minor allele frequency filter
+python genotype_discordance.py AG03.chr8.validation.tsv.gz AG08.chr8.imputed.tsv.gz 0.4 0.0
+```
+
 ## Phasing using HapCUT2
 
 Create a combined, phased VCF file for a single individual sample using: hapcutVcf.haplotagging.sh
