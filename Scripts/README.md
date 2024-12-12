@@ -172,13 +172,13 @@ In the example below, imputation performance is evaluated as the Pearson correla
 
 ```
 # Imputation performance by genotype (GT) with a desired INFO_SCORE filter (i.e., 0.4)
-python imputation_accuracy_GT_write2out.py AG03.chr8.validation.tsv.gz AG08.chr8.imputed.tsv.gz 0.4 AG03.chr8.GT.results.tsv
+python imputation_accuracy_GT_write2out.py AG03.chr8.validation.tsv.gz AG03.chr8.imputed.tsv.gz 0.4 AG03.chr8.GT.results.tsv
 
 # Imputation performance by dosage (DS) with a desired INFO_SCORE filter (i.e., 0.4)
-python imputation_accuracy_DS_write2out.py AG03.chr8.validation.tsv.gz AG08.chr8.imputed.tsv.gz 0.4 AG03.chr8.DS.results.tsv
+python imputation_accuracy_DS_write2out.py AG03.chr8.validation.tsv.gz AG03.chr8.imputed.tsv.gz 0.4 AG03.chr8.DS.results.tsv
 
 # Imputation accuracy measured as genotype discordance with a desired INFO_SCORE and minor allele frequency filter
-python genotype_discordance.py AG03.chr8.validation.tsv.gz AG08.chr8.imputed.tsv.gz 0.4 0.0
+python genotype_discordance.py AG03.chr8.validation.tsv.gz AG03.chr8.imputed.tsv.gz 0.4 0.0
 ```
 
 ## Phasing using HapCUT2
