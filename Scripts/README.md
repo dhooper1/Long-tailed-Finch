@@ -163,7 +163,7 @@ In the example below, validation and imputed information is extracted for sample
 bcftools query -s AG03 -f '%CHROM\t%POS\t[%GT]\n' chr8.validation.vcf.gz | gzip > AG03.chr8.validation.tsv.gz
 
 # Extract STITCH INFO_SCORE, estimated allele frequency, genotype, and dosage for sample of interest
-bcftools query -s AG03 -f '%CHROM\t%POS\t[%INFO_SCORE]\t[%EAF]\t[%GT]\t[%DS]\n' stitch.chr8.repeatmask.filter.vcf.gz | gzip > AG08.chr8.imputed.tsv.gz
+bcftools query -s AG03 -f '%CHROM\t%POS\t[%INFO_SCORE]\t[%EAF]\t[%GT]\t[%DS]\n' stitch.chr8.repeatmask.filter.vcf.gz | gzip > AG03.chr8.imputed.tsv.gz
 ```
 
 ### Step #2: Evaluate imputation performance
