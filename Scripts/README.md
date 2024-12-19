@@ -262,6 +262,7 @@ PREDICT="ReLERNN_PREDICT"
 BSCORRECT="ReLERNN_BSCORRECT"
 SEED="42"
 MU="5.85e-9"
+GEN="2.0"
 URTR="15"
 WORK_DIR="/mendel-nas1/dhooper/recombination"
 DIR="$WORK_DIR/paa/chr8/"
@@ -281,7 +282,7 @@ ${SIMULATE} \
     --mask ${MASK} \
     --projectDir ${DIR} \
     --assumedMu ${MU} \
-    --assumedGenTime 1 \
+    --assumedGenTime ${GEN} \
     --upperRhoThetaRatio ${URTR} \
     --seed ${SEED}
 
